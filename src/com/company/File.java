@@ -15,17 +15,16 @@ public class File implements Manipulatable {
 
     @Override
     public void view() {
-        try {
-            Files.list(path).forEach(System.out::println);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println(this.readStrings());
     }
 
     @Override
     public void create() {
         try {
-            Files.createDirectory(path);
+            if (this.checkExistence(path)) {
+                return;
+            }
+            Files.createFile(path);
             System.out.println("File created");
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,11 +56,22 @@ public class File implements Manipulatable {
 
     }
 
-    private void checkExistence() {
-        if (this.isExist(path)) {
-            String errorMessage = String.format("%s already exist", path);
-            System.err.println(errorMessage);
+    public void write(String text) {
+        try {
+            String current = this.readStrings();
+            Files.write(path, (current + text).getBytes());
+            System.out.println("ok");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
-}
 
+    private String readStrings() {
+        try {
+            return Files.readString(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+}

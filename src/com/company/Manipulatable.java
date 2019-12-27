@@ -9,7 +9,14 @@ public interface Manipulatable {
     void delete();
     void getInfo();
 
-    default boolean isExist(Path path) {
-        return Files.exists(path);
+
+    default boolean checkExistence(Path path) {
+        boolean alreadyExist = Files.exists(path);
+        if (alreadyExist) {
+            String errorMessage = String.format("%s already exist", path);
+            System.err.println(errorMessage);
+        }
+        return alreadyExist;
     }
+
 }

@@ -25,6 +25,9 @@ public class Directory implements Manipulatable {
     @Override
     public void create() {
         try {
+            if (checkExistence(path)) {
+                return;
+            }
             Files.createDirectory(path);
             System.out.println("Directory created");
         } catch (IOException e) {
@@ -57,10 +60,7 @@ public class Directory implements Manipulatable {
 
     }
 
-    private void checkExistence() {
-        if (this.isExist(path)) {
-            String errorMessage = String.format("%s already exist", path);
-            System.err.println(errorMessage);
-        }
+    public String getRelativePath() {
+        return path.toString();
     }
 }
